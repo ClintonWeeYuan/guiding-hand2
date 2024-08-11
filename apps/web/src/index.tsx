@@ -4,21 +4,18 @@ import { BrowserRouter } from 'react-router-dom'
 import { Workspace } from 'types'
 import App from '@/App'
 import './index.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const Main = () => {
-  const [data, setData] = useState<Workspace[]>([])
-
-  useEffect(() => {
-    fetch('http://localhost:8080/workspaces')
-      .then(response => response.json())
-      .then(({ data }) => setData(data))
-  }, [])
+  const queryClient = new QueryClient()
 
   return (
     <StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
     </StrictMode>
   )
 }

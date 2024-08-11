@@ -1,7 +1,7 @@
 import { Api } from 'types'
 
 const BACKEND_URL =
-  import.meta.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
+  import.meta.env['VITE_BACKEND_URL'] || 'http://localhost:8080'
 
 const BACKEND_API = new Api({ baseURL: BACKEND_URL })
 

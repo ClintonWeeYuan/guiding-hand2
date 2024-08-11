@@ -219,9 +219,9 @@ const SignupPage = () => {
               >
                 Signup
               </Button>
-              <link href="/login">
+              <a href="/login">
                 <span className="underline">Or login now!</span>
-              </link>
+              </a>
             </div>
           </form>
         </Form>

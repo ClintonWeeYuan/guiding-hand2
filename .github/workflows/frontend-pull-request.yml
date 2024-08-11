@@ -1,0 +1,39 @@
+name: Run FE Tests on Pull Request
+
+env:
+  SERVICE_NAME: frontend
+  BACKEND_URL: ${{ vars.BACKEND_URL }}
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  typecheck-and-lint:
+    name: Typecheck and Linting
+    runs-on: ubuntu-latest
+    environment: prod
+    defaults:
+      run:
+        working-directory: "client_repo"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: "client_repo/package-lock.json"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typescript Check
+        run: npm run ts:check
