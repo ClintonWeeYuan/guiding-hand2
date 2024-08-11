@@ -1,0 +1,32 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pnpm --stream -r start",
+    "dev": "pnpm --stream -r run dev",
+    "clean": "rm -rf .parcel-cache && pnpm -r run clean",
+    "check:lint": "pnpm eslint .",
+    "fix:lint": "pnpm eslint --fix ."
+  },
+  "packageManager": "pnpm@9.5.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@tanstack/eslint-plugin-query": "^5.51.15",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "5.1.0-rc-2d2cc042-20240809",
+    "globals": "^15.9.0",
+    "husky": "^9.1.4",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.1"
+  }
+}
