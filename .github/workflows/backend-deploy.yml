@@ -20,7 +20,7 @@ jobs:
     environment: prod
     defaults:
       run:
-        working-directory: "backend_repo"
+        working-directory: "apps/backend"
 
     steps:
       - name: Checkout repository
