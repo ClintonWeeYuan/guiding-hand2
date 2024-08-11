@@ -141,6 +141,10 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
   } else {
     const questionIndex = questions.findIndex(quest => quest.id === questionId)
     const currentQuestion = questions[questionIndex]
+    if (currentQuestion == undefined) {
+      throw Error('Current Question not supposed to be undefined')
+    }
+
     if (!currentQuestion.isMultiSelect) {
       return (
         <div className="h-[80vh]">

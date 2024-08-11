@@ -1,18 +1,19 @@
-import { useRouter } from 'next/router'
 import { PropsWithChildren } from 'react'
 
 import Navbar from './Navbar'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function AppLayout({ children }: PropsWithChildren) {
-  const router = useRouter()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleNavClick = (page: string) => {
-    router.push(`/${page}`)
+    navigate(`/${page}`)
   }
 
   return (
     <div className="flex flex-col justify-between min-h-screen">
-      <Navbar active={router.pathname.slice(1)} onNavClick={handleNavClick}>
+      <Navbar active={location.pathname.slice(1)} onNavClick={handleNavClick}>
         <div className="py-5" style={{ minHeight: '545px' }}>
           {children}
         </div>

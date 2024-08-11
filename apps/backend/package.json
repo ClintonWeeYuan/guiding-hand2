@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx jest --silent",
     "start": "nodemon src/index.ts",
+    "tsc": "tsc",
     "migrate:up": "node-pg-migrate -m='src/db/migrations' up",
     "migrate:down": "node-pg-migrate down",
     "migrate:redo": "node-pg-migrate redo",

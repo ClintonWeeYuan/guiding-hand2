@@ -6,8 +6,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { Question } from '@/src/lib/questionnaire/utils/questionDict'
-import { FormValue } from '@/src/lib/questionnaire/utils/questionnaireType'
+import { Question } from '@/lib/questionnaire/utils/questionDict'
+import { FormValue } from '@/lib/questionnaire/utils/questionnaireType'
 
 interface MultiSelectProps {
   //currentIndex: number
@@ -26,15 +26,14 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
   control,
 }) => {
   const setInitialOptions: () => string[] = () => {
-    if (userData[mainQuestionNumber - 1].includes('skipped')) {
+    if (userData[mainQuestionNumber - 1]?.includes('skipped')) {
       return []
     }
     return userData[mainQuestionNumber - 1] as string[]
   }
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(
-    setInitialOptions()
-  )
+  const [selectedOptions, setSelectedOptions] =
+    useState<string[]>(setInitialOptions())
 
   const handleCheckChange = (isChecked: boolean, option: string) => {
     const newSelectedOptions = [...selectedOptions]
@@ -62,7 +61,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
   const getFieldText = () => {
     const index = isTextFieldOption()
     if (index !== -1) {
-      return selectedOptions[index].substring(3)
+      return selectedOptions[index]?.substring(3) ?? ''
     }
     return ''
   }
@@ -72,9 +71,9 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
   const handleInputChange = (input: string) => setFieldText(input)
 
   const convertTextFieldToOption = (textField: string) => {
-    textField = textField.trim()
-    if (textField !== '') {
-      return 'TF-' + textField
+    const trimmedTextField = textField.trim()
+    if (trimmedTextField !== '') {
+      return 'TF-' + trimmedTextField
     }
     return ''
   }
@@ -111,7 +110,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
                 'w-4/5 md:w-3/5 p-4',
                 mainQuestionNumber === 5
                   ? 'max-lg:overflow-y-auto lg:grid lg:grid-cols-3 lg:gap-x-1 lg:gap-y-0'
-                  : ''
+                  : '',
               )}
             >
               {Object.keys(question.options).map((option, index) => {
@@ -121,7 +120,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
                     htmlFor={index.toString()}
                     className={cn(
                       'flex justify-center border rounded-xl w-full px-4 py-4 mb-2 cursor-pointer',
-                      isSelected(option) ? 'bg-brand-primary text-white' : ''
+                      isSelected(option) ? 'bg-brand-primary text-white' : '',
                     )}
                   >
                     <Checkbox
@@ -134,7 +133,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
                         'peer hidden',
                         isSelected(option)
                           ? 'text-brand-primary'
-                          : 'text-gray-500'
+                          : 'text-gray-500',
                       )}
                     />
                     <span className="cursor-pointer text-sm font-normal">
@@ -154,7 +153,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
                   }}
                   className={cn(
                     'h-auto flex justify-center border rounded-xl w-full px-4 py-4 mb-2 cursor-pointer',
-                    fieldText !== '' ? 'bg-brand-primary text-white' : ''
+                    fieldText !== '' ? 'bg-brand-primary text-white' : '',
                   )}
                 />
               )}
@@ -175,7 +174,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
       onSubmit(selectedOptions)
       setSubmit(false)
     }
-  }, [submit])
+  }, [onSubmit, selectedOptions, submit])
 
   return (
     <div className="h-full">
@@ -190,7 +189,7 @@ const QuestionnaireMultiSelect: React.FC<MultiSelectProps> = ({
         <div
           className={cn(
             'text-grey-100 flex flex-col items-center',
-            mainQuestionNumber === 5 ? 'max-lg:overflow-hidden' : ''
+            mainQuestionNumber === 5 ? 'max-lg:overflow-hidden' : '',
           )}
         >
           {renderOptions()}

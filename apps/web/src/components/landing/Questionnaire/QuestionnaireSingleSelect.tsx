@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { RadioGroup } from '@/components/ui/radio-group'
-import { Question } from '@/src/lib/questionnaire/utils/questionDict'
-import { FormValue } from '@/src/lib/questionnaire/utils/questionnaireType'
+import { Question } from '@/lib/questionnaire/utils/questionDict'
+import { FormValue } from '@/lib/questionnaire/utils/questionnaireType'
 
 import CustomRadio from './CustomRadio'
 
@@ -14,7 +14,7 @@ interface SingleSelectProps {
   userData: string[][]
   onOptionSelected: (
     selectedOption: string,
-    questionNumber: string | number
+    questionNumber: string | number,
   ) => void
   handleSkip: () => void
   control: Control<FormValue>
@@ -28,19 +28,18 @@ const QuestionnaireSingleSelect: React.FC<SingleSelectProps> = ({
   handleSkip,
   control,
 }) => {
-  const getInitialOption: () => string = () => {
-    return userData[mainQuestionNumber - 1].length > 0
-      ? userData[mainQuestionNumber - 1][0]
-      : ''
-  }
+  const getInitialOption = useCallback(() => {
+    const options = userData[mainQuestionNumber - 1] ?? []
 
-  const [selectedOption, setSelectedOption] = useState<string>(
-    getInitialOption()
-  )
+    return options[0] ?? ''
+  }, [mainQuestionNumber, userData])
+
+  const [selectedOption, setSelectedOption] =
+    useState<string>(getInitialOption())
 
   useEffect(() => {
     setSelectedOption(getInitialOption())
-  }, [mainQuestionNumber])
+  }, [getInitialOption, mainQuestionNumber])
 
   const isSelected: (option: string) => boolean = option => {
     return option === selectedOption
@@ -81,7 +80,7 @@ const QuestionnaireSingleSelect: React.FC<SingleSelectProps> = ({
     if (selectedOption === '' || selectedOption === 'skipped') {
       handleSkip()
     } else {
-      onOptionSelected(selectedOption, question.options[selectedOption])
+      onOptionSelected(selectedOption, question.options[selectedOption]!)
     }
   }
 

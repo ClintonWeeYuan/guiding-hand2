@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import BACKEND_API from '@/backend'
-import { UserInformation } from '@/backend/backendApi'
+import BACKEND_API from '@/lib/backendApi'
+import { UserInformation } from 'types'
 
 interface UserContextValue {
   userId: number | null

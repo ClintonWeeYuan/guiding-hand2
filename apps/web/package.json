@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "start": "pnpm i && pnpm dev"
+    "start": "pnpm i && pnpm dev",
+    "tsc": "tsc"
   },
   "type": "module",
   "keywords": [],

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Message } from '@/types'
+import { Message } from 'types'
 
 import useUser from './useUser'
 
@@ -23,7 +23,7 @@ const useMessages = (chatroomId: number) => {
             channel: 'MessageChannel',
             chat_room_id: chatroomId,
           }),
-        })
+        }),
       )
     }
 

@@ -1,0 +1,67 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importStar(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_json_1 = __importDefault(require("../build/swagger.json"));
+const routes_1 = require("../build/routes");
+const errorHandling_1 = require("./utilities/errorHandling");
+const cors_1 = __importDefault(require("cors"));
+dotenv_1.default.config();
+const app = (0, express_1.default)();
+const port = process.env.PORT || 8080;
+const eligibleOrigins = [
+    process.env.FRONTEND_URL_DEV,
+    process.env.FRONTEND_URL_PROD,
+];
+app.get("/", (_, res) => {
+    res.send("Express + TypeScript Server");
+});
+app.use((0, express_1.urlencoded)({
+    extended: true,
+}));
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || eligibleOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+};
+app.use(express_1.default.json());
+app.use((0, cors_1.default)(corsOptions));
+(0, routes_1.RegisterRoutes)(app);
+app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
+app.use(errorHandling_1.notFoundHandler);
+app.use(errorHandling_1.errorHandler);
+app.listen(port, () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
+});
