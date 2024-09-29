@@ -1,18 +1,18 @@
 import express, { Express, Request, Response, urlencoded } from "express";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "../build/swagger.json";
-import { RegisterRoutes } from "../build/routes";
+import swaggerDocument from "../tsoa/swagger.json";
+import { RegisterRoutes } from "../tsoa/routes";
 import { errorHandler, notFoundHandler } from "./utilities/errorHandling";
 import cors from "cors";
 
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env["PORT"] || 8080;
 const eligibleOrigins = [
-  process.env.FRONTEND_URL_DEV,
-  process.env.FRONTEND_URL_PROD,
+  process.env["FRONTEND_URL_DEV"],
+  process.env["FRONTEND_URL_PROD"],
 ];
 
 app.get("/", (_: Request, res: Response) => {

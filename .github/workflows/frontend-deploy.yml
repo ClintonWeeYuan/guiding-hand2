@@ -16,6 +16,9 @@ jobs:
   dockerize-and-deploy:
     runs-on: ubuntu-latest
     environment: prod
+    defaults:
+      run:
+        working-directory: "apps/web"
 
     steps:
       - name: Checkout repository
@@ -35,15 +38,18 @@ jobs:
           gcloud auth configure-docker
 
       - name: Build and Push Docker Image
+        working-directory: "./"
         run: |
-          cd client_repo
-          docker build --build-arg BACKEND_URL=$BACKEND_URL -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest ./
+          docker build . --target web --build-arg BACKEND_URL=$BACKEND_URL -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
       - name: Deploy to Cloud Run
+        working-directory: "./"
         run: |
           gcloud run deploy $SERVICE_NAME \
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
             --platform managed \
             --region asia-southeast1 \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --port 3000
+

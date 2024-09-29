@@ -1,39 +1,39 @@
-import { Request as ExpRequest } from 'express'
-import { Body, Controller, Get, Middlewares, Post, Request, Route } from 'tsoa'
+import { Request as ExpRequest } from "express";
+import { Body, Controller, Get, Middlewares, Post, Request, Route } from "tsoa";
 
-import { authToken } from '../middlewares/userMiddleware'
+import { authToken } from "../middlewares/userMiddleware";
 import {
   User,
   UserCreationParams,
   UserInformation,
   UserLoginParams,
   UsersService,
-} from '../service/usersService'
+} from "../service/usersService";
 
-const usersService = new UsersService()
+const usersService = new UsersService();
 
-@Route('users')
+@Route("users")
 export class UsersController extends Controller {
-  @Get('')
+  @Get("")
   @Middlewares(authToken)
   public async getUser(@Request() req: ExpRequest): Promise<UserInformation> {
-    const payload = req.res?.locals.jwtDecoded
-    const id = payload.userId
+    const payload = req.res?.locals["jwtDecoded"];
+    const id = payload.userId;
 
-    return usersService.getById(id)
+    return usersService.getById(id);
   }
 
-  @Post('')
+  @Post("")
   public async createUser(
     @Body() requestBody: UserCreationParams,
   ): Promise<number> {
-    return usersService.create(requestBody)
+    return usersService.create(requestBody);
   }
 
-  @Post('login')
+  @Post("login")
   public async loginUser(
     @Body() requestBody: UserLoginParams,
   ): Promise<User & UserInformation & { token: string }> {
-    return usersService.login(requestBody)
+    return usersService.login(requestBody);
   }
 }

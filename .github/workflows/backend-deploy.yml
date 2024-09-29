@@ -40,11 +40,14 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Generate OpenAPI types
+        run: pnpm run oa:generate-types
+
       - name: Lint
-        run: pnpm run check:lint
+        run: pnpm run lint:check
 
       - name: Typescript Check
-        run: npm run ts:check
+        run: npm run tsc
 
       - name: Unit Tests
         run: npm run test
@@ -54,6 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     needs: [typecheck-and-lint]
+    defaults:
+      run:
+        working-directory: "apps/backend"
 
     steps:
       - name: Checkout repository
@@ -73,14 +79,14 @@ jobs:
           gcloud auth configure-docker
 
       - name: Build and Push Docker Image
+        working-directory: "./"
         run: |
-          cd backend_repo
-          echo $FRONTEND_URL_PROD
-          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg FRONTEND_URL_PROD=$FRONTEND_URL_PROD \
-           -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest ./
+          docker build . --target backend --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg FRONTEND_URL_PROD=$FRONTEND_URL_PROD \
+           -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest
 
       - name: Deploy to Cloud Run
+        working-directory: "./"
         run: |
           gcloud run deploy $SERVICE_NAME \
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest \
