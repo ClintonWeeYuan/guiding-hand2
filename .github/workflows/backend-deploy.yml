@@ -47,10 +47,10 @@ jobs:
         run: pnpm run lint:check
 
       - name: Typescript Check
-        run: npm run tsc
+        run: pnpm run tsc
 
       - name: Unit Tests
-        run: npm run test
+        run: pnpm run test
 
 
   dockerize-and-deploy:
