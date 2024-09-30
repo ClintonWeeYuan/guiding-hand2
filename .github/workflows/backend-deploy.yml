@@ -10,7 +10,7 @@ on:
     branches:
       - main
     paths:
-      - "backend_repo/**"
+      - "apps/backend/**"
   workflow_dispatch:
 
 jobs:
