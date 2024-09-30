@@ -44,7 +44,7 @@ jobs:
         run: pnpm run lint:check
 
       - name: Typescript Check
-        run: pnpm run ts:check
+        run: pnpm run tsc
 
       - name: Unit Tests
         run: pnpm run test
