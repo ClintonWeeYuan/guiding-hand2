@@ -22,21 +22,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: "pnpm-lock.yaml"
+          cache-dependency-path: "pnpm"
 
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
+
+      - name: Generate OpenAPI types
+        run: pnpm run oa:generate-types
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint:check
 
       - name: Typescript Check
-        run: npm run ts:check
+        run: pnpm run ts:check
 
       - name: Unit Tests
-        run: npm run test
+        run: pnpm run test
