@@ -11,7 +11,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env["PORT"] || 8080;
 const eligibleOrigins = [
-  process.env["FRONTEND_URL_DEV"],
+  "http://localhost:3000",
   process.env["FRONTEND_URL_PROD"],
 ];
 
