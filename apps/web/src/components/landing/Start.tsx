@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
+import { FC } from 'react'
 
-interface startProps {
+interface Props {
   handleStart: () => void
   handleSkip: () => void
 }
 
-const Start: React.FC<startProps> = ({ handleStart, handleSkip }) => {
+const Start: FC<Props> = ({ handleStart, handleSkip }) => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
       <div className="lg:w-3/5">

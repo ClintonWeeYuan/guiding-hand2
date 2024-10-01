@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { EXTERNAL_URLS } from '@/lib/constants'
+import { Link } from 'react-router-dom'
 
 interface PersonalInfoProps {
   handleChange: (
@@ -46,8 +47,13 @@ const PersonalInfo: FC<PersonalInfoProps> = ({
         <CardDescription>
           We value your trust and want to assure you that all personal data
           provided is held in the strictest confidence. Please see our{' '}
-          <link href={EXTERNAL_URLS.PRIVACY_POLCY}>Privacy Policy</link> for
-          details.
+          <Link
+            className="underline hover:text-brand-primary"
+            to={EXTERNAL_URLS.PRIVACY_POLCY}
+          >
+            Privacy Policy{' '}
+          </Link>
+          for details.
         </CardDescription>
       </CardHeader>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
